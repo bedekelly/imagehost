@@ -1,0 +1,31 @@
+<html lang="en">
+
+<head>
+    <title>Image Hosting Application</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
+    <link rel="stylesheet" href="/static/bower_components/angular-material/angular-material.css"/>
+    <link rel="stylesheet" href="/static/bower_components/lf-ng-md-file-input/dist/lf-ng-md-file-input.css">
+</head>
+
+<body ng-app="uploadModule">
+
+{% block content %}
+{% endblock %}
+
+<!-- Include dependencies on various angular libraries. -->
+<script src="/static/bower_components/angular/angular.js"></script>
+<script src="/static/bower_components/angular-animate/angular-animate.js"></script>
+<script src="/static/bower_components/angular-aria/angular-aria.js"></script>
+<script src="/static/bower_components/angular-material/angular-material.js"></script>
+<script src="/static/bower_components/lf-ng-md-file-input/dist/lf-ng-md-file-input.js"></script>
+
+<!-- Include project-specific scripts. Separate these into modules, services, controllers etc.
+ for larger projects so they don't get unwieldy. -->
+<script src="/static/js/uploadModule.js"></script>
+<script src="/static/js/uploadService.js"></script>
+<script src="/static/js/uploadController.js"></script>
+<script src="/static/js/filesController.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+    <div ng-controller="uploadController as uc">
+        <h1>Upload Files</h1>
+        <form name="fileUpload">
+            <lf-ng-md-file-input name="file" lf-api="uc.fileInputAPI" lf-totalsize="16MB" lf-files="uc.files" drag progress></lf-ng-md-file-input>
+            <md-button ng-click="uc.onSubmit()">Submit</md-button>
+        </form>
+    </div>
+{% endblock %}

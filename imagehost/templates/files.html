@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <script src="/static/js/download.js"></script>
+
+    <!-- Display the navigation/toolbar at the top. -->
+    <md-toolbar class="md-hue-2">
+      <div class="md-toolbar-tools">
+        <h1>
+          <span>Your files</span>
+        </h1>
+        <span flex></span>
+      </div>
+    </md-toolbar>
+
+    <!-- Show all the files in filesController. -->
+    <md-content layout="row" class="md-padding" layout-wrap ng-controller="filesController as fc">
+        <div layout="row" layout-wrap>
+            <md-card ng-repeat="file in fc.files" flex-gt-md-none layout>
+                <md-card-title layout-gt-md="column" layout-align-gt-md="start end">
+                    <md-card-title-text>
+                        <span class="md-headline">[[ file.filename ]]</span>
+                        <span class="md-subhead md-text">Type: [[ file.filetype ]]</span>
+                        <md-card-actions>
+                            <button class="md-button" ng-click="fc.download([[file.url]])">Download</button>
+                            <md-button>Remove</md-button>
+                        </md-card-actions>
+                    </md-card-title-text>
+                </md-card-title>
+
+                <md-card-title-media hide-xs layout-align="end stretch" layout="row">
+                    <img style="min-width: 150px;" class="md-media-xs card-media md-card-image" ng-src="https://placehold.it/150x150" />
+                </md-card-title-media>
+            </md-card>
+        </div>
+    </md-content>
+
+
+
+
+{% endblock %}
