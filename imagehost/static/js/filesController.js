@@ -1,6 +1,6 @@
 angular.module("uploadModule")
     .controller("filesController", [
-        "$http", "$mdDialog", function($http, $mdDialog) {
+        "$http", "$mdDialog", "$mdMedia", "$scope", function($http, $mdDialog, $mdMedia, $scope) {
             var ctrl = this;
             ctrl.updateFiles = function() {
                 $http.get("/api/files").then(function(response){
@@ -26,14 +26,28 @@ angular.module("uploadModule")
                         $http.delete("/api/files", file).then(
                             function(response) {
                                 console.log(response);
+                                ctrl.updateFiles();
                             },
                             function(error) {
                                 console.log(error);
+                                ctrl.updateFiles();
                             }
                         );
                     }
                 );
+            };
 
+            ctrl.showUpload = function(ev) {
+                var useFullScreen = ($mdMedia('sm') || $mdMedia('xs'))  && $scope.customFullscreen;
+                $mdDialog.show({
+                    controller: "uploadController",
+                    templateUrl: 'upload',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose:true,
+                    openFrom: document.getElementsByClassName("upload-button"),
+                    fullscreen: useFullScreen
+                });
             }
         }
     ]);

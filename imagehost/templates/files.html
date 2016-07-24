@@ -1,55 +1,74 @@
 {% extends "base.html" %}
 {% block content %}
-    <!-- Display the navigation/toolbar at the top. -->
-    <md-toolbar class="md-hue-1">
-      <div class="md-toolbar-tools">
-        <h1>
-          <span>Your files</span>
-        </h1>
-        <span flex></span>
-      </div>
-    </md-toolbar>
+    <style type="text/css">
+        .truncate {
+            text-overflow: ellipsis;
+            min-height: 30px;
+            overflow: hidden;
+            white-space: nowrap;
+        }
 
-    <style>
+        .file-card-filename {
+            max-width: 20ch;
+        }
 
-    .truncate {
-        text-overflow: ellipsis;
-        min-height: 30px;
-        overflow: hidden;
-        white-space: nowrap;
-    }
+        .file-card-filetype {
+            max-width: 15ch;
+        }
 
-    .file-card-filename {
-        max-width: 20ch;
-    }
-
-    .file-card-filetype {
-        max-width: 15ch;
-    }
+        .upload-button {
+            position: fixed;
+            right: 2%;
+            bottom: 3%;
+        }
     </style>
 
-    <!-- Show all the files in filesController. -->
-    <md-content layout="row" class="md-padding" layout-wrap ng-controller="filesController as fc">
-        <div layout="row" layout-wrap>
-            <md-card ng-repeat="file in fc.files" flex-gt-md-none layout>
-                <md-card-title layout-gt-md="column" layout-align-gt-md="start end">
-                    <md-card-title-text>
-                        <span class="md-headline truncate file-card-filename">[[ file.filename ]]</span>
-                        <span class="md-subhead md-text truncate file-card-filetype">Type: [[ file.filetype ]]</span>
-                        <md-card-actions>
-                            <button class="md-button" ng-click="fc.download(file.url)">Download</button>
-                            <button class="md-button" ng-click="fc.removeClicked(file)">Remove</button>
-                        </md-card-actions>
-                    </md-card-title-text>
-                </md-card-title>
+    <div ng-controller="filesController as fc">
+        <!-- Display the navigation/toolbar at the top. -->
+        <md-toolbar class="md-hue-1">
+          <div class="md-toolbar-tools">
+            <h1>
+              <span>Your files</span>
+            </h1>
+            <span flex></span>
+          </div>
+        </md-toolbar>
 
-                <md-card-title-media hide-xs layout-align="end stretch" layout="row">
-                    <img style="min-width: 150px;" class="md-media-xs card-media md-card-image" ng-src="https://unsplash.it/g/150/150" />
-                </md-card-title-media>
-            </md-card>
-        </div>
-    </md-content>
+        <!-- Show all the files in filesController. -->
+        <md-content layout="row" class="md-padding" layout-wrap ng-controller="filesController as fc">
+            <div layout="row" layout-wrap>
+                <md-card ng-repeat="file in fc.files" flex-gt-md-none layout>
+                    <md-card-title layout-gt-md="column" layout-align-gt-md="start end">
+                        <md-card-title-text>
+                            <span class="md-headline truncate file-card-filename">[[ file.filename ]]</span>
+                            <span class="md-subhead md-text truncate file-card-filetype">Type: [[ file.filetype ]]</span>
+                            <md-card-actions>
+                                <button class="md-button" ng-click="fc.download(file.url)">Download</button>
+                                <button class="md-button" ng-click="fc.removeClicked(file)">Remove</button>
+                            </md-card-actions>
+                        </md-card-title-text>
+                    </md-card-title>
 
+                    <md-card-title-media hide-xs layout-align="end stretch" layout="row">
+                        <img style="min-width: 150px;" class="md-media-xs card-media md-card-image" ng-src="https://unsplash.it/150/150?blur" />
+                    </md-card-title-media>
+                </md-card>
+            </div>
+        </md-content>
+
+        <!-- Show an 'upload' button on the bottom-right. -->
+{#            <md-button class="md-fab upload-button" ng-click="fc.showUpload($event)">#}
+{#            <i class="material-icons">cloud_upload</i>#}
+{#        </md-button>#}
+
+
+        <label class="md-fab upload-button" for="inputId">
+            <md-button class="md-fab upload-button">
+                <i class="material-icons">cloud_upload</i>
+            </md-button>
+        </label>
+        <input id="inputId" type="file" style="position: fixed; top: -100em">
+    </div>
 
 
 

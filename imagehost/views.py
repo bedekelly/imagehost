@@ -42,6 +42,6 @@ def delete_file():
     return jsonify(error="Not yet implemented!"), 501
 
 
-@flask_app.route("/files")
+@flask_app.route("/")
 def view_files():
     return render_template("files.html")
