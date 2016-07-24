@@ -5,16 +5,18 @@ from celery import Celery
 from .models import File
 from . import flask_app, db
 
-app = Celery("imagehost.tasks", broker=app.config["BROKER"])
+app = Celery("imagehost.tasks", broker=flask_app.config["BROKER"])
 
 
 def add_to_index(orig_filename, filetype, url):
+    """Add a file to our index."""
     file = File(orig_filename, filetype, url)
     db.session.add(file)
     db.session.commit()
 
 
 def s3_upload(dest_filename, orig_filename, filetype, filename):
+    """Upload a file to S3."""
     connection = boto.connect_s3(flask_app.config["S3_KEY"],
                                  flask_app.config["S3_SECRET"])
     bucket = connection.get_bucket(flask_app.config["S3_BUCKET"])
@@ -35,6 +37,25 @@ def s3_upload(dest_filename, orig_filename, filetype, filename):
 
 @app.task(name="imagehost.tasks.process_file")
 def process_file(filename, dest_filename, orig_filename, filetype):
+    """Process a file by uploading it to S3 and adding it to our index."""
     url = s3_upload(dest_filename, orig_filename, filetype, filename)
     add_to_index(orig_filename, filetype, url)
     return dest_filename
+
+
+def remove_from_index(s3_url):
+    """Remove an entry in our files index by its S3 URL."""
+    File.query.filter_by(url=s3_url).delete()
+    db.session.commit()
+
+
+def remove_from_s3(s3_url):
+    """Remove a key from the S3 store by its URL."""
+    raise NotImplementedError("Remove a key from the S3 store.")
+
+
+@app.task(name="imagehost.tasks.delete_file")
+def delete_file(s3_url):
+    """Delete a file based on its S3 URL (which is unique)."""
+    remove_from_index(s3_url)
+    remove_from_s3(s3_url)

@@ -14,4 +14,4 @@ class File(db.Model):
 
     def to_dict(self):
         return dict(filename=self.filename, filetype=self.filetype,
-                    url=self.url)
+                    s3_url=self.url)

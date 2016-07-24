@@ -1,5 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
+
+    <!-- Display the navigation/toolbar at the top. -->
+    <md-toolbar class="md-hue-2">
+      <div class="md-toolbar-tools">
+        <h1>
+          <span>Your files</span>
+        </h1>
+        <span flex></span>
+      </div>
+    </md-toolbar>
+
     <div ng-controller="uploadController as uc">
         <h1>Upload Files</h1>
         <form name="fileUpload">

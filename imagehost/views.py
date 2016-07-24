@@ -26,9 +26,20 @@ def upload():
     return jsonify(success="File uploaded"), 200
 
 
-@flask_app.route("/api/files")
+@flask_app.route("/api/files", methods=["GET"])
 def get_files():
-    return jsonify([file.to_dict() for file in File.query.all()])
+    return jsonify(files=[file.to_dict() for file in File.query.all()])
+
+
+@flask_app.route("/api/files", methods=["DELETE"])
+def delete_file():
+    """
+    Start a celery task to remove this file from our database and from the
+    S3 bucket.
+    """
+    from .tasks import delete_file
+    delete_file.delay(request.json)
+    return jsonify(error="Not yet implemented!"), 501
 
 
 @flask_app.route("/files")
