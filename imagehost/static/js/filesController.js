@@ -9,20 +9,18 @@ angular.module("uploadModule")
             };
             ctrl.updateFiles();
 
-            ctrl.download = function(url) {
-                window.open(url, "_blank");
+            ctrl.download = function(file) {
+                window.open(file.s3_url, "_blank");
             };
 
             ctrl.removeClicked = function(file) {
-                console.log(file);
                 var confirm = $mdDialog.confirm()
                     .title("Delete file")
                     .textContent("Are you sure you want to delete this file?")
                     .ok("Delete")
                     .cancel("Cancel");
                 $mdDialog.show(confirm).then(
-                    function(ev) {
-                        console.log("deleting file");
+                    function() {
                         $http.delete("/api/files", file).then(
                             function(response) {
                                 console.log(response);
@@ -45,7 +43,6 @@ angular.module("uploadModule")
                     parent: angular.element(document.body),
                     targetEvent: ev,
                     clickOutsideToClose:true,
-                    openFrom: document.getElementsByClassName("upload-button"),
                     fullscreen: useFullScreen
                 });
             }

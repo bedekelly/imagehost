@@ -35,11 +35,32 @@ def s3_upload(dest_filename, orig_filename, filetype, filename):
     return url
 
 
+def generate_thumb(filename, filetype):
+    known_types = {
+        ""
+    }
+
+
+    if filetype in known_types:
+        return known_types[filetype]
+
+    with open(filename, "rb") as f:
+        img_data = f.read()
+
+    thumb_filename = filename + ".thumb.png"
+    with open(thumb_filename) as f:
+        f.write(thumb_data)
+    return thumb_filename
+
+
 @app.task(name="imagehost.tasks.process_file")
 def process_file(filename, dest_filename, orig_filename, filetype):
     """Process a file by uploading it to S3 and adding it to our index."""
     url = s3_upload(dest_filename, orig_filename, filetype, filename)
-    add_to_index(orig_filename, filetype, url)
+    thumbnail_filename = generate_thumb(filename, filetype)
+    thumbnail_url = s3_upload(thumbnail_filename, dest_filename+".thumb.png",
+                              "", "")
+    add_to_index(orig_filename, filetype, url, thumbnail_url)
     return dest_filename
 
 
